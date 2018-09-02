@@ -7,11 +7,16 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public GameObject player;
+    public AudioSource musicFile;
 
     void Start()
     {
         if (!player)
             player = GameObject.FindGameObjectWithTag("Player");
+
+        musicFile = GetComponent<AudioSource>();
+        musicFile.Play(0);
+
     }
 
     void Update()
