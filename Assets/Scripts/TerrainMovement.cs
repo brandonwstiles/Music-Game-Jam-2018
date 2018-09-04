@@ -5,15 +5,13 @@ using UnityEngine;
 public class TerrainMovement : MonoBehaviour {
 
     public float moveSpeed = 3f;
-    Rigidbody2D rbody;
 
     private void Start()
     {
-        rbody = gameObject.GetComponent<Rigidbody2D>();
     }
 
     void Update ()
     {
-        rbody.velocity = new Vector2(-moveSpeed, 0);
+        transform.position = Vector2.MoveTowards(transform.position, new Vector2(0, transform.position.y + 1), moveSpeed);
 	}
 }

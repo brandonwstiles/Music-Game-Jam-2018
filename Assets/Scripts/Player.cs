@@ -4,79 +4,33 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float jumpForce = 5f;
-    public float jumpSpeedAdjust = 2.5f;
-    public float maxJumpTime = 0.35f;
+    public float moveDistance;
+    public float moveSpeed;
     public bool isDead;
 
-    float currentJumpTime;
-    bool isGrounded;
-    bool isJumping;
-    Rigidbody2D rbody;
-
+    Vector2 targetPos;
+    
     private void Start()
     {
-        rbody = gameObject.GetComponent<Rigidbody2D>();
+        targetPos = transform.position;
     }
 
     void FixedUpdate ()
     {
-        rbody.velocity += Vector2.up * Physics.gravity.y * jumpSpeedAdjust * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, targetPos, moveSpeed);
+        if (targetPos.x % moveDistance != 0)
+            targetPos.x = 0;
 
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.A) && targetPos.x > -moveDistance * 2)
         {
-            isJumping = true;
-            currentJumpTime = maxJumpTime;
-            rbody.velocity = Vector2.up * jumpForce;
+            targetPos = new Vector2(transform.position.x - moveDistance, transform.position.y);
         }
-        /*
-        if(Input.GetKey(KeyCode.Space) && isJumping)
+
+        if (Input.GetKeyDown(KeyCode.D) && targetPos.x < moveDistance * 2)
         {
-            if (currentJumpTime > 0)
-            {
-                rbody.velocity = Vector2.up * jumpForce;
-                currentJumpTime -= Time.deltaTime;
-            }
-            else
-                isJumping = false;
+            targetPos = new Vector2(transform.position.x + moveDistance, transform.position.y);
         }
-        
-        if (Input.GetKeyUp(KeyCode.Space))
-            isJumping = false;
-        */
+
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Obstacle"))
-        {
-            gameObject.SetActive(false);
-            isDead = true;
-        }
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        print("Object Tag: " + collision.gameObject.tag);
-        print("Object name: " + collision.gameObject.name);
-
-        if (collision.gameObject.CompareTag("Platform"))
-            isGrounded = true;
-        else if (collision.gameObject.CompareTag("Obstacle"))
-        {
-            gameObject.SetActive(false);
-            isDead = true;
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Platform"))
-            isGrounded = true;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Platform"))
-            isGrounded = false;
-    }
 }
