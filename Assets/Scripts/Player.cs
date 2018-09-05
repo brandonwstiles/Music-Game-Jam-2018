@@ -15,9 +15,10 @@ public class Player : MonoBehaviour
         targetPos = transform.position;
     }
 
-    void FixedUpdate ()
+    void Update ()
     {
         transform.position = Vector2.MoveTowards(transform.position, targetPos, moveSpeed);
+
         if (targetPos.x % moveDistance != 0)
             targetPos.x = 0;
 
