@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Jump : MonoBehaviour
 {
-    public float jumpForce = 5f;
+    public float jumpForce = 100f;
 
     public bool isGrounded;
     Rigidbody2D rbody;
@@ -21,7 +21,7 @@ public class Jump : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
                 print("JUMP!!!");
-            rbody.velocity = new Vector2(0, jumpForce);
+            rbody.velocity = new Vector2(rbody.velocity.x, jumpForce);
         }
     }
 

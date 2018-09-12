@@ -310,6 +310,8 @@
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Jump.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Run.cs" />
     <Compile Include="Assets\Scripts\TerrainMovement.cs" />
   </ItemGroup>
   <ItemGroup>

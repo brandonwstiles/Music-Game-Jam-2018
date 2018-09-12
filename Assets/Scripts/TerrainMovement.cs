@@ -12,6 +12,6 @@ public class TerrainMovement : MonoBehaviour {
 
     void Update ()
     {
-        transform.position = Vector2.MoveTowards(transform.position, new Vector2(0, transform.position.y + 1), moveSpeed);
+        transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x - 1, transform.position.y), moveSpeed);
 	}
 }
