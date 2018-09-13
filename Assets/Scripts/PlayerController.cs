@@ -1,20 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement Values")]
     public float moveSpeed;
     public float jumpForce;
-    public Vector2 moveInput;
+    private int extraJumpsCurrent;
+    public int extraJumpsMax;
+    public float fallMultiplier;
+    private Vector2 moveInput;
 
+    [Header("Ground Detection")]
     public Transform groundCheck;
     public float groundCheckRadius;
     public LayerMask groundLayer;
-    public bool isGrounded;
+    //[SerializeField]
+    private bool isGrounded;
 
-    private int extraJumpsCurrent;
-    public int extraJumpsMax;
 
     private Rigidbody2D rbody;
     private SpriteRenderer spriteRenderer;
@@ -25,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     {
         rbody = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         moveInput = Vector2.zero;
     }
 
@@ -35,18 +41,20 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
             moveInput.y = 1;
-
     }
 
     private void FixedUpdate()
     {
         moveInput.x = Input.GetAxis("Horizontal");
         moveInput.y = Input.GetAxis("Vertical");
-        //Try this -- moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        //Try this: moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
         rbody.velocity = new Vector2(moveInput.x * moveSpeed, rbody.velocity.y);
+
+        if (rbody.velocity.y < 0)
+            rbody.velocity = new Vector2(rbody.velocity.x, rbody.velocity.y * fallMultiplier);
 
         if (Input.GetKeyDown(KeyCode.Space) && extraJumpsCurrent > 0)
         {
@@ -62,7 +70,11 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = true;
         else if (!facingRight && moveSpeed > 0)
             spriteRenderer.flipX = true;
-
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Obstacle"))
+            SceneManager.LoadScene("SideScroller");
+    }
 }

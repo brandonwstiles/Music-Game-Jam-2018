@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (player.GetComponent<Player>().isDead && Input.GetKey(KeyCode.Space))
-            SceneManager.LoadScene("SampleScene");
+       // if (player.GetComponent<Player>().isDead && Input.GetKey(KeyCode.Space))
+        //    SceneManager.LoadScene("SampleScene");
     }
 }
